@@ -109,13 +109,11 @@ class JailbreakDetector:
     
     def _get_training_sequences(self):
         """Calculate K-NB rank sequence as features for each sample in mixed background pool """
-        print(f"? Calculating training sequences for mixed background pool (K-NB Rank, k={self.k_nb})...")
         num_samples = len(self.background_labels)
         num_layers = 32
         
         # Check GPU availability
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"Using computing device: {device}")
         
         # Pre-create Tensor to store all sequences (avoid list append then conversion)
         all_sequences = torch.empty((num_samples, num_layers), device=device)

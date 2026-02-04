@@ -121,8 +121,8 @@ def main(flag):
     benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()
     malicious_train_data = load_sd_advbench_for_train()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    processor = AutoTokenizer.from_pretrained("/HARD-DATA/ZHT/A_model/qwen_vl_chat", trust_remote_code=True)
-    model = AutoModelForCausalLM.from_pretrained("/HARD-DATA/ZHT/A_model/qwen_vl_chat", device_map="cuda", trust_remote_code=True).eval()
+    processor = AutoTokenizer.from_pretrained("Qwen/Qwen-VL-Chat", trust_remote_code=True)
+    model = AutoModelForCausalLM.from_pretrained("Qwen/Qwen-VL-Chat", device_map="cuda", trust_remote_code=True).eval()
     all_activations = []
     all_labels = []
     if os.path.exists(f"./experimental_results/{flag}/saved_features_and_labels.pt"):

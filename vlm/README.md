@@ -1,20 +1,4 @@
-# Multimodal Jailbreak Detector
-
-
-
-A multimodal (text + image) LLM jailbreak prompt detector based on **K-NB Rank + PyTorch IsolationForest**, supporting LLaVA-1.6 and Qwen-VL models. It efficiently identifies malicious jailbreak prompts and outputs anomaly scores without fine-tuning the base model.
-
-## 🌟 Key Features
-
-- **Multimodal Support**: Detect jailbreak prompts with text-image mixed inputs (compatible with LLaVA/Qwen-VL dual models)
-
-- **Efficient Anomaly Detection**: K-NB Rank feature extraction + PyTorch-based IsolationForest (GPU-accelerated training/inference)
-
-- **Comprehensive Evaluation Metrics**: AUROC, AUPRC, FPR, Precision, and other core metrics
-
-- **Multi-Dataset Compatibility**: Built-in loaders for MM-SafetyBench, SD-AdvBench, MM-Vet v2, VQA datasets
-
-- **Low Intrusion**: No fine-tuning required for large models (uses hidden layer activations for detection)
+# MTK
 
 ## 📋 Environment Requirements
 
@@ -70,4 +54,3 @@ python test_AUROC_llava.py
 # Run jailbreak detection evaluation for Qwen-VL
 python test_AUROC_qwen.py
 ```
-> （注：文档部分内容可能由 AI 生成）

@@ -10,19 +10,15 @@ class JailbreakDetector:
     """
 
     def __init__(self, model, processor, background_layered_activations, all_labels, flag, n_estimators=100, random_state=42, k_nb=5):
-        self.model = model  # Base LLM (Llama-2-chat)
-        self.processor = processor  # Corresponding tokenizer
-        self.device = model.device  # Running device (CPU/GPU)
+        self.model = model
+        self.processor = processor
+        self.device = model.device
         self.flag = flag
-        self.k_nb = k_nb  # K value in K-NB Rank (top K similar benign samples)
-        print(f"\n? Initializing detector with K-NB Rank (k={self.k_nb})")
-
+        self.k_nb = k_nb 
         # Restructure hidden layer features: organize by layer (original: organized by sample)
         self.background_activations_by_layer = background_layered_activations
         self.background_labels = all_labels  # Background sample labels (1=benign, 0=malicious)
         self.num_layers = len(self.background_activations_by_layer) 
-
-        print("\n--- Training IsolationForest classifier with K-NB rank sequence ---")
         # Generate training features
         if os.path.exists(f"./experimental_results/{flag}/training_sequences.pt"):
             training_sequences = torch.load(f"./experimental_results/{flag}/training_sequences.pt")
@@ -32,17 +28,14 @@ class JailbreakDetector:
         # Filter benign samples (IsolationForest trains only on benign samples to learn "normal" distribution)
         benign_indices = torch.where(y_train == 0)[0]
         benign_training_sequences = training_sequences[benign_indices]
-        print(f"Filtered {len(benign_training_sequences)} benign samples from total {len(y_train)} background samples for training.")
 
         # PyTorch standardization (avoid NumPy conversion)
         self.mean = benign_training_sequences.mean(dim=0, keepdim=True)
         self.std = benign_training_sequences.std(dim=0, keepdim=True) + 1e-8  # Prevent division by zero
         X_train = (benign_training_sequences - self.mean) / self.std  # Standardization on GPU
         # PyTorch IsolationForest
-        print(f"Training PyTorch IsolationForest with n_estimators={n_estimators}...")
         self.if_model = PyTorchIsolationForest(n_estimators=100, max_samples=256, random_state=42)
         self.if_model.fit(X_train)  # Train with Tensor directly
-        print("PyTorch IsolationForest training completed!")
 
     def make_context(
         self,
@@ -205,13 +198,11 @@ class JailbreakDetector:
 
     def _get_training_sequences(self):
         """Calculate K-NB rank sequence as features for each sample in mixed background pool (GPU accelerated)"""
-        print(f"? Calculating training sequences for mixed background pool (K-NB Rank, k={self.k_nb})...")
         num_samples = len(self.background_labels)
         num_layers = 32
         
         # Check GPU availability
         device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-        print(f"Using computing device: {device}")
         
         # Pre-create Tensor to store all sequences (avoid list append then conversion)
         all_sequences = torch.empty((num_samples, num_layers), device=device)

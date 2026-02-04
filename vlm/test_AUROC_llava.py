@@ -48,8 +48,8 @@ def main(flag):
     benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()
     malicious_train_data = load_sd_advbench_for_train()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
-    processor = AutoProcessor.from_pretrained("/HARD-DATA/ZHT/A_model/llava-v1.6-vicuna-7b-hf")
-    model = AutoModelForVision2Seq.from_pretrained("/HARD-DATA/ZHT/A_model/llava-v1.6-vicuna-7b-hf",device_map='auto',torch_dtype=torch.float16)
+    processor = AutoProcessor.from_pretrained("llava-hf/llava-v1.6-vicuna-7b-hf")
+    model = AutoModelForVision2Seq.from_pretrained("llava-hf/llava-v1.6-vicuna-7b-hf",device_map='auto',torch_dtype=torch.float16)
     all_activations = []  
     all_labels = []   
     if os.path.exists(f"./experimental_results/{flag}/saved_features_and_labels.pt"):
