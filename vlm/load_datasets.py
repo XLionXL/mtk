@@ -60,7 +60,7 @@ def load_sd_advbench_for_train(file_path="./datasets/sd_advbench/prompt_img_map.
             unsafe_set.append(sample)
         except Exception as e:
             continue
-    return random.sample(unsafe_set, 300)
+    return random.sample(unsafe_set, 400)
 
 def load_mm_safety_bench(file_path):   
     dataset = []
@@ -192,4 +192,4 @@ def load_usb_datasset_for_train():
     df = df.dropna(subset=["text", "open_url"])
     result_list = df[["text", "open_url"]].values.tolist()
     result_list = [[r[0],os.path.join("./datasets/usb", r[1])]for r in result_list]
-    return random.sample(result_list, 200)
+    return random.sample(result_list, 300)
