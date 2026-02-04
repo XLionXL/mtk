@@ -21,31 +21,38 @@ A multimodal (text + image) LLM jailbreak prompt detector based on **K-NB Rank +
 ### Dependency Installation
 ```bash
 # Clone repository
-git clone https://github.com/[your-username]/multimodal-jailbreak-detector.git
-cd multimodal-jailbreak-detector
+git clone https://github.com/XLionXL/mtk.git
+cd mtk/vlm
 
 # Install core dependencies
 pip install -r requirements.txt
 
-# (Optional) For CPU-only PyTorch
-# pip install torch --index-url https://download.pytorch.org/whl/cpu
-🚀 Quick Start
-1. Dataset Preparation
-Place datasets in the specified paths (modify paths load_datasets.pypy`):
-Dataset	Path Example	Purpose
-VQA	./datasets/vqa/test2015	Benign samples (training)
-MM-Vet v2	./datasets/mm-vet-v2	Benign samples (testing)
-SD-AdvBench	./datasets/sd_advbench	Malicious samples (training)
-MM-SafetyBench	./datasets/MM-SafetyBench	Malicious samples (testing)
-2. Model Weights Preparation
-Download multimodal model weights and place them in the specified paths (modify from_pretrained paths in test scripts):
-LLaVA-1.6-Vicuna-7B: /HARD-DATA/ZHT/A_model/llava-v1.6-vicuna-7b-hf
-Qwen-VL-Chat: /HARD-DATA/ZHT/A_model/qwen_vl_chat
-3. Run Detection (LLaVA Example)
-bash
-运行
+## 🚀 Quick Start
+
+### 1. Dataset Preparation
+
+Place datasets in the specified paths (modify paths in `load_datasets.py`):
+
+|Dataset|Path Example|Purpose|
+|---|---|---|
+|VQA|./datasets/vqa/test2015|Benign samples (training)|
+|MM-Vet v2|./datasets/mm-vet-v2|Benign samples (testing)|
+|SD-AdvBench|./datasets/sd_advbench|Malicious samples (training)|
+|MM-SafetyBench|./datasets/MM-SafetyBench|Malicious samples (testing)|
+### 2. Model Weights Preparation
+
+Download multimodal model weights and place them in the specified paths (modify `from_pretrained` paths in test scripts):
+
+- LLaVA-1.6-Vicuna-7B: `./models/llava-v1.6-vicuna-7b-hf`
+
+- Qwen-VL-Chat: `./models/qwen_vl_chat`
+
+### 3. Run Detection
+
+```bash
 # Run jailbreak detection evaluation for LLaVA
-python test_AUROC_llava.py
+python test_AUROC_llava.py 
 
 # Run jailbreak detection evaluation for Qwen-VL
 python test_AUROC_qwen.py
+```
