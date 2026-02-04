@@ -49,6 +49,10 @@ Place datasets in the specified paths (modify paths in `load_datasets.py`):
 |MM-Vet v2|./datasets/mm-vet-v2|Benign samples (testing)|
 |SD-AdvBench|./datasets/sd_advbench|Malicious samples (training)|
 |MM-SafetyBench|./datasets/MM-SafetyBench|Malicious samples (testing)|
+|FigStep|./datasets/FigStep|Malicious samples (testing)|
+|JailBreakV_28K|./datasets/JailBreakV_28K|Malicious samples (testing)|
+|USB-Overrefusal|./datasets/MM-SafetyBench|Benign samples (testing)|
+
 ### 2. Model Weights Preparation
 
 Download multimodal model weights and place them in the specified paths (modify `from_pretrained` paths in test scripts):
