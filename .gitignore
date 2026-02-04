@@ -1,4 +1,10 @@
-vlm/datasets/*
+vlm/datasets/FigStep/
+vlm/datasets/JailBreakV_28K/
+vlm/datasets/MM-SafetyBench/
+vlm/datasets/mm-vet-v2/
+vlm/datasets/sd_advbench/
+vlm/datasets/usb/
+vlm/datasets/vqa/
 vlm/experimental_results/*
 vlm/useless
 vlm/__pycache__
