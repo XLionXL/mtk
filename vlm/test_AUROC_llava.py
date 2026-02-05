@@ -60,7 +60,6 @@ def main(flag):
         background_layered_activations = loaded_data["background_layered_activations"]
         all_labels = loaded_data["labels"]
     else:
-        # benign_prompts = random.sample(benign_train_data[:300],100)+random.sample(benign_train_data[-300:],300)
         benign_prompts = benign_train_data
 
         all_activations = []

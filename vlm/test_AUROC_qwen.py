@@ -119,7 +119,7 @@ def evaluate_AUROC(true_labels, scores):
     return auroc   
    
 def main(flag):
-    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()+load_mm_vet_v2_for_train()
+    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()
     malicious_train_data = load_sd_advbench_for_train()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     processor = AutoTokenizer.from_pretrained("Qwen/Qwen-VL-Chat", trust_remote_code=True)
@@ -132,7 +132,6 @@ def main(flag):
         background_layered_activations = loaded_data["background_layered_activations"]
         all_labels = loaded_data["labels"]
     else:
-        # benign_prompts = benign_train_data[:100]+benign_train_data[-300:]
         benign_prompts = benign_train_data
         all_activations = []
         for sentence in tqdm(benign_prompts, desc="Extract features of benign samples"):
