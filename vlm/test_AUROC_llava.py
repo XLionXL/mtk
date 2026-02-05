@@ -22,6 +22,7 @@ def find_threshold_for_target_fpr(scores_0, target_fpr=0.05):
         threshold = sorted_scores[n_positive - 1]
     
     actual_fpr = (scores_0 >= threshold).sum() / len(scores_0)
+    print(f"FPR=0.05,threshold={threshold}")
     return threshold
 
 def calculate_metrics_with_threshold(scores, labels, threshold):
@@ -45,7 +46,7 @@ def evaluate_AUROC(true_labels, scores):
     return auroc   
    
 def main(flag):
-    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()
+    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()+load_mm_vet_v2_for_train()
     malicious_train_data = load_sd_advbench_for_train()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     processor = AutoProcessor.from_pretrained("llava-hf/llava-v1.6-vicuna-7b-hf")
@@ -142,9 +143,11 @@ def main(flag):
     datasets = {}     
     results = {}   
     datasets["MM-SafetyBench+MM-Vet"] = load_mm_safety_bench_all() + load_mm_vet_v2()
-    # datasets["FigImg+MM-Vet"] = load_FigImg() + load_mm_vet_v2()
-    # datasets["JBV28K_JBtxt_SDimg+MM-Vet"] = load_JailBreakV_JBtxt_SDimg() + load_mm_vet_v2()
+    # datasets["MM-SafetyBench+MM-vqa"] = load_mm_safety_bench_all() + load_vqa()
+    datasets["FigImg+MM-Vet"] = load_FigImg() + load_mm_vet_v2()
+    datasets["JBV28K_JBtxt_SDimg+MM-Vet"] = load_JailBreakV_JBtxt_SDimg() + load_mm_vet_v2()
     datasets["MM-SafetyBench+usb"] = load_mm_safety_bench_all() +load_usb_datasset() 
+    datasets["MM-Vet_all"] = load_mm_vet_v2(is_all=True)
 
     total_datasets = len(datasets)    
     print(f"Starting evaluation of {total_datasets} datasets...")
@@ -172,18 +175,18 @@ def main(flag):
             writer.writerow(['txt', 'img', 'true_labels', 'score'])
             writer.writerows(transposed_data)
         AUPRC = evaluate_AUPRC(true_labels, scores)
-        AUROC = evaluate_AUROC(true_labels, scores)            
-        results[dataset_name] = (AUPRC,AUROC)
-        print(f"AUPRC for {dataset_name}: {AUPRC}")
-        print(f"AUROC for {dataset_name}: {AUROC}")
-
+        AUROC = evaluate_AUROC(true_labels, scores)    
+        if dataset_name != "MM-Vet_all":        
+            results[dataset_name] = (AUPRC,AUROC)
+            print(f"AUPRC for {dataset_name}: {AUPRC}")
+            print(f"AUROC for {dataset_name}: {AUROC}")
         with open(f"./experimental_results/{flag}/results/llava_AUROC_result.csv", "w", newline="") as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(["Dataset Name", "AUPRC","AUROC"])  
             for dataset_name, result in results.items():
                 if result is not None:  
                     writer.writerow([dataset_name, f"{result[0]:.4f}", f"{result[1]:.4f}"])
-    scores_0_only_csv_file_path = f"./experimental_results/{flag}/results/test_llava_MM-SafetyBench+MM-Vet.csv"  # 替换为你的CSV文件路径（如：/Users/xxx/data.csv 或 D:/xxx/data.csv）
+    scores_0_only_csv_file_path = f"./experimental_results/{flag}/results/test_llava_MM-Vet_all.csv"  # 替换为你的CSV文件路径（如：/Users/xxx/data.csv 或 D:/xxx/data.csv）
     to_test_csv_file_path = f"./experimental_results/{flag}/results/test_llava_MM-SafetyBench+usb.csv"
     scores_0_df = pd.read_csv(scores_0_only_csv_file_path)
     to_test_df = pd.read_csv(to_test_csv_file_path)
@@ -195,7 +198,12 @@ def main(flag):
     all_labels = to_test_df["true_labels"].values
     fpr, precision = calculate_metrics_with_threshold(all_scores, all_labels, threshold)
 if __name__ == '__main__':
-    main(sys.argv[1])
+    import datetime
+    if len(sys.argv) > 1:
+        arg_value = sys.argv[1]
+    else:
+        arg_value = datetime.now().strftime("%Y%m%d_%H%M%S")
+    main(arg_value)
 
 
 

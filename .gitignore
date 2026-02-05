@@ -8,3 +8,4 @@ vlm/datasets/vqa/
 vlm/experimental_results/*
 vlm/useless
 vlm/__pycache__
+vlm/cal_FPR_PRE.py

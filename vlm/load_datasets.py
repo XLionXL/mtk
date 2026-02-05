@@ -20,9 +20,60 @@ def load_vqa_dataset_for_train(json_path="./datasets/vqa/OpenEnded_mscoco_test20
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     dataset = [[d['question'],os.path.join("./datasets/vqa/test2015",f"COCO_test2015_{str(d['image_id']).zfill(12)}.jpg")] for d in data["questions"]]
+    return random.sample(dataset, 400)
+
+def load_usb_datasset_for_train():
+    df = pd.read_csv(
+        "./datasets/usb/overfuse_data.csv",
+        usecols=["text", "open_url"],
+        dtype=str  
+    )
+    df = df.dropna(subset=["text", "open_url"])
+    result_list = df[["text", "open_url"]].values.tolist()
+    result_list = [[r[0],os.path.join("./datasets/usb", r[1])]for r in result_list]
+    return random.sample(result_list, 50)
+
+def load_mm_vet_v2_for_train(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
+    parent_dir = "./datasets/mm-vet-v2/non_palette_images"
+    dataset = []
+    with open(json_path, "r") as f:
+        data_dict = json.load(f)
+    for k,v in data_dict.items():
+        result = split_by_img_tag(v["question"])
+        if result and os.path.exists(os.path.join(parent_dir, result[1])):
+            dataset.append([result[0], os.path.join(parent_dir, result[1])])
     return random.sample(dataset, 100)
+   
+
+def load_sd_advbench_for_train(file_path="./datasets/sd_advbench/prompt_img_map.csv"):
+    unsafe_set = []
+    base_path = "./datasets/sd_advbench/outputs_new/"
+    df = pd.read_csv(file_path)
+    for index, row in df.iterrows():
+        try:
+            img_path = os.path.join(base_path, row["img_path"].split('/')[-1])
+            sample = [row["prompts"], img_path]
+            unsafe_set.append(sample)
+        except Exception as e:
+            continue
+    return random.sample(unsafe_set, 500)
+
+def load_vqa(json_path="./datasets/vqa/OpenEnded_mscoco_test2015_questions.json",
+                     image_base_path="./datasets/vqa/test2015", sample_num=500, seed=42):
+    dataset_dict = []
+    with open(json_path, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    dataset = [[d['question'],os.path.join("./datasets/vqa/test2015",f"COCO_test2015_{str(d['image_id']).zfill(12)}.jpg")] for d in data["questions"]]
+    for d in dataset:
+        sample = {
+                        "txt": d[0],  
+                        "img": d[1],
+                        "toxicity": 0
+                    }
+        dataset_dict.append(sample)
+    return random.sample(dataset_dict, 218)
     
-def load_mm_vet_v2(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
+def load_mm_vet_v2(json_path="./datasets/mm-vet-v2/mm-vet-v2.json",is_all=False):
     parent_dir = "./datasets/mm-vet-v2/non_palette_images"
     dataset = []
     with open(json_path, "r") as f:
@@ -36,31 +87,10 @@ def load_mm_vet_v2(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
                         "toxicity": 0
                     }
             dataset.append(sample)
-    return dataset[:218] 
-
-def load_mm_vet_v2_for_train(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
-    parent_dir = "./datasets/mm-vet-v2/non_palette_images"
-    dataset = []
-    with open(json_path, "r") as f:
-        data_dict = json.load(f)
-    for k,v in data_dict.items():
-        result = split_by_img_tag(v["question"])
-        if result and os.path.exists(os.path.join(parent_dir, result[1])):
-            dataset.append([result[0], os.path.join(parent_dir, result[1])])
-    return dataset   
-
-def load_sd_advbench_for_train(file_path="./datasets/sd_advbench/prompt_img_map.csv"):
-    unsafe_set = []
-    base_path = "./datasets/sd_advbench/outputs_new/"
-    df = pd.read_csv(file_path)
-    for index, row in df.iterrows():
-        try:
-            img_path = os.path.join(base_path, row["img_path"].split('/')[-1])
-            sample = [row["prompts"], img_path]
-            unsafe_set.append(sample)
-        except Exception as e:
-            continue
-    return random.sample(unsafe_set, 400)
+    if is_all:
+        return dataset
+    else:
+        return random.sample(dataset, 218)
 
 def load_mm_safety_bench(file_path):   
     dataset = []
@@ -165,7 +195,7 @@ def load_JailBreakV_JBtxt_SDimg(file_path = "./datasets/JailBreakV_28K/JailBreak
     unsafe_set = random.sample(unsafe_set,218)
     return unsafe_set
 
-def load_usb_datasset():
+def load_usb_datasset(is_all=False):
     dataset_list = []
     df = pd.read_csv(
         "./datasets/usb/overfuse_data.csv",
@@ -181,15 +211,8 @@ def load_usb_datasset():
                 "toxicity": 0
             }
         dataset_list.append(sample)
-    return random.sample(dataset_list, 218)
+    if is_all:
+        return dataset_list
+    else:
+        return random.sample(dataset_list, 218)
 
-def load_usb_datasset_for_train():
-    df = pd.read_csv(
-        "./datasets/usb/overfuse_data.csv",
-        usecols=["text", "open_url"],
-        dtype=str  
-    )
-    df = df.dropna(subset=["text", "open_url"])
-    result_list = df[["text", "open_url"]].values.tolist()
-    result_list = [[r[0],os.path.join("./datasets/usb", r[1])]for r in result_list]
-    return random.sample(result_list, 300)
