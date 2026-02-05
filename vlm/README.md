@@ -30,12 +30,12 @@ Place datasets in the specified paths (modify paths in `load_datasets.py`):
 |Dataset|Path Example|Purpose|
 |---|---|---|
 |[VQA](https://visualqa.org/download.html)|./datasets/vqa/test2015|Benign samples (training)|
-|MM-Vet v2|./datasets/mm-vet-v2|Benign samples (testing)|
-|SD-AdvBench|./datasets/sd_advbench|Malicious samples (training)|
-|MM-SafetyBench|./datasets/MM-SafetyBench|Malicious samples (testing)|
-|FigStep|./datasets/FigStep|Malicious samples (testing)|
-|JailBreakV_28K|./datasets/JailBreakV_28K|Malicious samples (testing)|
-|USB-Overrefusal|./datasets/MM-SafetyBench|Benign samples (testing)|
+|[MM-Vet v2]|./datasets/mm-vet-v2|Benign samples (testing)|
+|[SD-AdvBench]|./datasets/sd_advbench|Malicious samples (training)|
+|[MM-SafetyBench]|./datasets/MM-SafetyBench|Malicious samples (testing)|
+|[FigStep]()https://github.com/CryptoAILab/FigStep/tree/main/data/images/SafeBench|./datasets/FigStep|Malicious samples (testing)|
+|[JailBreakV_28K](https://huggingface.co/datasets/JailbreakV-28K/JailBreakV-28k)|./datasets/JailBreakV_28K|Malicious samples (testing)|
+|[USB-Overrefusal]|./datasets/MM-SafetyBench|Benign samples (testing)|
 
 ### 2. Model Weights Preparation
 
