@@ -20,7 +20,7 @@ def load_vqa_dataset_for_train(json_path="./datasets/vqa/OpenEnded_mscoco_test20
     with open(json_path, "r", encoding="utf-8") as f:
         data = json.load(f)
     dataset = [[d['question'],os.path.join("./datasets/vqa/test2015",f"COCO_test2015_{str(d['image_id']).zfill(12)}.jpg")] for d in data["questions"]]
-    return random.sample(dataset, 400)
+    return random.sample(dataset, 250)
 
 def load_usb_datasset_for_train():
     df = pd.read_csv(
@@ -31,7 +31,7 @@ def load_usb_datasset_for_train():
     df = df.dropna(subset=["text", "open_url"])
     result_list = df[["text", "open_url"]].values.tolist()
     result_list = [[r[0],os.path.join("./datasets/usb", r[1])]for r in result_list]
-    return random.sample(result_list, 100)
+    return random.sample(result_list, 50)
 
 def load_mm_vet_v2_for_train(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
     parent_dir = "./datasets/mm-vet-v2/non_palette_images"
@@ -56,7 +56,7 @@ def load_sd_advbench_for_train(file_path="./datasets/sd_advbench/prompt_img_map.
             unsafe_set.append(sample)
         except Exception as e:
             continue
-    return random.sample(unsafe_set, 500)
+    return random.sample(unsafe_set, 300)
 
 def load_vqa(json_path="./datasets/vqa/OpenEnded_mscoco_test2015_questions.json",
                      image_base_path="./datasets/vqa/test2015", sample_num=500, seed=42):

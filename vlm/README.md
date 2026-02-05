@@ -33,7 +33,7 @@ Place datasets in the specified paths (modify paths in `load_datasets.py`):
 |[MM-Vet v2](https://github.com/yuweihao/MM-Vet)|./datasets/mm-vet-v2|Benign samples (testing)|
 |[SD-AdvBench]|./datasets/sd_advbench|Malicious samples (training)|
 |[MM-SafetyBench](https://huggingface.co/datasets/PKU-Alignment/MM-SafetyBench)|./datasets/MM-SafetyBench|Malicious samples (testing)|
-|[FigStep](https://github.com/CryptoAILab/FigStep/tree/main/data/images/SafeBench|./datasets/FigStep|Malicious) samples (testing)|
+|[FigStep](https://github.com/CryptoAILab/FigStep/tree/main/data/images/SafeBench)|./datasets/FigStep|Malicious samples (testing)|
 |[JailBreakV_28K](https://huggingface.co/datasets/JailbreakV-28K/JailBreakV-28k)|./datasets/JailBreakV_28K|Malicious samples (testing)|
 |[USB-Overrefusal](https://huggingface.co/datasets/cgjacklin/USB/tree/main)|./datasets/MM-SafetyBench|Benign samples (testing)|
 
