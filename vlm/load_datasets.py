@@ -31,7 +31,7 @@ def load_usb_datasset_for_train():
     df = df.dropna(subset=["text", "open_url"])
     result_list = df[["text", "open_url"]].values.tolist()
     result_list = [[r[0],os.path.join("./datasets/usb", r[1])]for r in result_list]
-    return random.sample(result_list, 50)
+    return random.sample(result_list, 100)
 
 def load_mm_vet_v2_for_train(json_path="./datasets/mm-vet-v2/mm-vet-v2.json"):
     parent_dir = "./datasets/mm-vet-v2/non_palette_images"

@@ -46,7 +46,8 @@ def evaluate_AUROC(true_labels, scores):
     return auroc   
    
 def main(flag):
-    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()+load_mm_vet_v2_for_train()
+    # +load_mm_vet_v2_for_train()
+    benign_train_data = load_vqa_dataset_for_train()+load_usb_datasset_for_train()
     malicious_train_data = load_sd_advbench_for_train()
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
     processor = AutoProcessor.from_pretrained("llava-hf/llava-v1.6-vicuna-7b-hf")
