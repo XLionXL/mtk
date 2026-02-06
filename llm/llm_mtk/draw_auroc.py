@@ -1,0 +1,60 @@
+import os
+import glob
+import pandas as pd
+from sklearn.metrics import roc_auc_score
+
+def evaluate_attack_auroc(exp_dir, test_dict_name):
+    toxic_chat_file = os.path.join(exp_dir, f"{test_dict_name}_toxic-chat_benign_0_results_detail.csv")
+    over_refuse_file = os.path.join(exp_dir, f"{test_dict_name}_non_refusal_prompts_with_responses_80k_0_results_detail.csv")
+
+    if not os.path.exists(toxic_chat_file):
+        raise FileNotFoundError(f"Toxic-chat file not found: {toxic_chat_file}")
+    if not os.path.exists(over_refuse_file):
+        raise FileNotFoundError(f"Over-refuse file not found: {over_refuse_file}")
+
+    df_toxic = pd.read_csv(toxic_chat_file)
+    if len(df_toxic) < 400:
+        df_toxic_sample = df_toxic
+    else:
+        df_toxic_sample = df_toxic.sample(n=400, random_state=42)
+
+    df_refuse = pd.read_csv(over_refuse_file)
+    if len(df_refuse) < 100:
+        df_refuse_sample = df_refuse
+    else:
+        df_refuse_sample = df_refuse.sample(n=100, random_state=42)
+
+    benign_df = pd.concat([df_toxic_sample, df_refuse_sample], ignore_index=True)
+    benign_df["True_Label"] = 0
+
+    result_dict = {}
+
+    search_pattern = os.path.join(exp_dir, f"{test_dict_name}_*_1_results_detail.csv")
+    for file_path in glob.glob(search_pattern):
+        file_name = os.path.basename(file_path)
+        attack_name = file_name.replace(f"{test_dict_name}_", "").replace("_1_results_detail.csv", "")
+
+        try:
+            attack_df = pd.read_csv(file_path)
+            attack_df["True_Label"] = 1
+
+            df = pd.concat([benign_df, attack_df], ignore_index=True)
+
+            y_true = df["True_Label"].values
+            y_attack = (y_true == 1).astype(int)
+            y_score = -df["Anomaly_Score"].values
+
+            auroc = roc_auc_score(y_attack, y_score)
+            result_dict[attack_name] = auroc
+
+        except Exception:
+            pass
+
+    result_df = pd.DataFrame(list(result_dict.items()), columns=["Attack Method", "AUROC"])
+    out_path = os.path.join(exp_dir, "all_attack_auroc_results.csv")
+    result_df.to_csv(out_path, index=False, encoding="utf-8-sig")
+
+if __name__ == "__main__":
+    experiment_directory = "vicuna/report/"
+    test_dic_name = "vicuna-7b-v1.5"
+    evaluate_attack_auroc(experiment_directory, test_dic_name)
