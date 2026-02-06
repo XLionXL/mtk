@@ -1,4 +1,4 @@
-# MTK
+# LLM_MTK
 
 ## 📋 Environment Requirements
 
