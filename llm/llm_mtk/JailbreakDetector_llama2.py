@@ -29,7 +29,6 @@ class JailbreakDetector:
         X_train = (benign_training_sequences - self.mean) / self.std
         self.if_model = PyTorchIsolationForest(n_estimators=n_estimators, max_samples=512, random_state=42)
         self.if_model.fit(X_train)
-
     def predict(self, prompt_text: str = None, input_ids: torch.Tensor = None, return_score=True, attack_key=None,
                     return_ranks=False):
             if input_ids is None and prompt_text is not None:

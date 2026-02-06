@@ -10,12 +10,9 @@ def evaluate_attack_auroc(exp_dir, test_dict_name):
         raise FileNotFoundError(f"Toxic-chat file not found: {toxic_chat_file}")
 
     df_toxic = pd.read_csv(toxic_chat_file)
-    if len(df_toxic) < 500:
-        df_toxic_sample = df_toxic
-    else:
-        df_toxic_sample = df_toxic.sample(n=500, random_state=42)
 
-    benign_df = df_toxic_sample.copy()
+
+    benign_df = df_toxic.copy()
     benign_df["True_Label"] = 0
 
     result_dict = {}

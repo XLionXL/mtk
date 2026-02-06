@@ -9,7 +9,7 @@ import json
 from Indicator_analysis_drawing import *
 from extract_AC_json import extract_accuracy_to_excel
 from extract_trainset_hiddenstates_vicuna import extract_trainset_hiddenstates
-from draw_auroc import evaluate_attack_auroc
+from draw_auroc import evaluate_auroc
 try:
     sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
     from utils.string_utils import load_conversation_template, autodan_SuffixManager

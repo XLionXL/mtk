@@ -12,10 +12,8 @@ def extract_trainset_hiddenstates(your_flag, device, tokenizer, model, benign_pr
             loaded_data = torch.load(load_path, map_location=device)
             background_layered_activations = loaded_data["background_layered_activations"]
             all_labels = loaded_data["labels"]
-
             loaded_layers = background_layered_activations.shape[1]
             current_model_layers = model.config.num_hidden_layers
-
             if loaded_layers != current_model_layers:
                 need_extract = True
             else:

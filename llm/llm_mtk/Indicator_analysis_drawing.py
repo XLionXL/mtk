@@ -22,7 +22,6 @@ def calculate_metrics(y_true, y_pred):
     }
     return metrics
 
-
 def save_experiment_report(metrics, results_detail, attack_name, save_dir="./experiment_reports"):
     os.makedirs(save_dir, exist_ok=True)
 
@@ -41,7 +40,6 @@ def save_experiment_report(metrics, results_detail, attack_name, save_dir="./exp
     csv_path = os.path.join(save_dir, f"{attack_name}_results_detail.csv")
     df = pd.DataFrame(results_detail)
     df.to_csv(csv_path, index=False, encoding="utf-8-sig")
-
 
 def generate_report(attack_key, results_detail, your_flag, total):
     y_true = [item["True_Label"] for item in results_detail]

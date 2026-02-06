@@ -88,13 +88,9 @@ Place **test datasets** under:
 `./datasets/{model_name}_test`
 
 where `{model_name}` must be one of:
-
 -   `llama2`
-    
 -   `llama3`
-    
 -   `mistral`
-    
 -   `vicuna`
     
 

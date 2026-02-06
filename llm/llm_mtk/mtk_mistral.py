@@ -16,7 +16,6 @@ try:
 except ImportError as e:
     sys.exit(1)
 
-
 def list_available_attacks(attack_dir):
     if not os.path.isdir(attack_dir):
         return []

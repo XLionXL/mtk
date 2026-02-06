@@ -5,7 +5,6 @@ from tqdm import tqdm
 from transformers import GenerationConfig
 import torch.nn.functional as F
 
-
 class JailbreakDetector:
     def __init__(self, model, tokenizer, background_layered_activations, all_labels, your_flag,
                  n_estimators, random_state, max_samples, k_nb, target_layers=None, metric='l2'):

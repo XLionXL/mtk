@@ -35,7 +35,6 @@ def extract_accuracy_to_excel(your_flag='.'):
         df = pd.DataFrame(results)
         df.to_excel(output_file, index=False)
 
-
 if __name__ == "__main__":
     json_folder = "new-detector"
     extract_accuracy_to_excel(json_folder)

@@ -9,7 +9,6 @@ def extract_trainset_hiddenstates(your_flag, device, tokenizer, model, benign_pr
     if os.path.exists(f"./{your_flag}/saved_features_and_labels.pt"):
         load_path = f"./{your_flag}/saved_features_and_labels.pt"
         loaded_data = torch.load(load_path, map_location=device)
-
         background_layered_activations = loaded_data["background_layered_activations"]
         all_labels = loaded_data["labels"]
     else:
