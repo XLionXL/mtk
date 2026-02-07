@@ -2,7 +2,7 @@ vlm/datasets/FigStep/
 vlm/datasets/JailBreakV_28K/
 vlm/datasets/MM-SafetyBench/
 vlm/datasets/mm-vet-v2/
-vlm/datasets/sd_advbench/
+vlm/datasets/sd_advbench/outputs_new.zip
 vlm/datasets/usb/
 vlm/datasets/vqa/
 vlm/experimental_results/*
