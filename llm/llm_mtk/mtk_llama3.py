@@ -168,7 +168,7 @@ if __name__ == '__main__':
     ]
 
     template_name = 'llama-3'
-    attack_dir = "dataset/llama3_test"
+    attack_dir = "datasets/llama3_test"
     attack_file_path_list = [os.path.join(attack_dir, attack_key) for attack_key in os.listdir(attack_dir)]
 
     model_path = "model/llama3"

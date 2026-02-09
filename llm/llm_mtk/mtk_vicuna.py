@@ -178,7 +178,7 @@ if __name__ == '__main__':
     ]
 
     template_name = 'vicuna-7b'
-    attack_dir = "dataset/vicuna_test/"
+    attack_dir = "datasets/vicuna_test/"
     attack_file_path_list = [os.path.join(attack_dir, attack_key) for attack_key in os.listdir(attack_dir)]
 
     model_path = "model/vicuna-7b-v1_5/"
